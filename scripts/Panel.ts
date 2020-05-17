@@ -12,11 +12,31 @@ class Panel
         document.addEventListener("mouseup", ()=>{this.OnTextSelecting()});
         document.addEventListener("mousedown", ()=>{this.HidePanel()});
 
+        //this.panelElement.addEventListener("click", ()=>{this.editor.RestoreFocus()});
+
         let tmp = (this.panelElement as HTMLElement);
         tmp.addEventListener("click", ev => this.OnClick());
 
         tmp.addEventListener("mouseenter", ev => this.isOnPanel = true);
         tmp.addEventListener("mouseleave", ev => this.isOnPanel = false);
+
+
+        let selectTextFormat = document.getElementById("textFormatSelection") as HTMLSelectElement;
+        selectTextFormat.addEventListener("change",()=>this.editor.Format('formatblock',selectTextFormat.selectedOptions[0].value));
+
+        let selectTextFont = document.getElementById("textFontSelection") as HTMLSelectElement;
+        selectTextFont.addEventListener("change",()=>this.editor.Format('fontname',selectTextFont.selectedOptions[0].value));
+
+        let selectTextSize = document.getElementById("textSizeSelection") as HTMLSelectElement;
+        selectTextSize.addEventListener("change",()=>this.editor.Format('fontsize',selectTextSize.selectedOptions[0].value));
+
+        let selectTextColor = document.getElementById("textColorSelection") as HTMLSelectElement;
+        selectTextColor.addEventListener("change",()=>this.editor.Format('forecolor',selectTextColor.selectedOptions[0].value));
+
+        let selectBackgroundColor = document.getElementById("backgroundColorSelection") as HTMLSelectElement;
+        selectBackgroundColor.addEventListener("change",()=>this.editor.Format('backcolor',selectBackgroundColor.selectedOptions[0].value));
+
+        document.getElementById("btnRemoveTextFormat").addEventListener("click",()=>{this.editor.Format("removeFormat"); alert("clicked")});
     }
 
     private OnClick()
