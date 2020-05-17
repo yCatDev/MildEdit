@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="scripts/Panel.js"></script>
+    <script src="scripts/Editor.js"></script>
     <script src="scripts/main.js"></script>
+
     <link rel="stylesheet" href="styles/style.css">
     <script src="https://kit.fontawesome.com/726e03ea95.js" crossorigin="anonymous"></script>
     <title>MildEdit - just another online text editor</title>
@@ -10,10 +13,11 @@
 <body>
 <h1 class="text-logo">MildEdit</h1>
 <h2 class="text-logo text-lighter">Just another online text editor</h2>
-<h3 class="text-logo text-lighter text-italic">You are editing {FILE_NAME}</h3>
-<div id="panel">
+<h3 class="text-logo text-lighter">You are editing - <span id="filename" class="text-italic">Untitled</span></h3>
+<div id="panel" class="">
     <div class="panel-strip-top">
         <select id="textFormatSelection">
+            <option value="" disabled selected>Формат текста</option>
             <option value="p">Обычный текст</option>
             <option value="h1">Загаловок - 1</option>
             <option value="h2">Загаловок - 2</option>
@@ -22,26 +26,28 @@
             <option value="h5">Загаловок - 5</option>
         </select>
         <select id="textFontSelection">
+            <option value="" disabled selected>Шрифт</option>
             <option>Arial</option>
             <option>Arial Black</option>
             <option>Courier New</option>
             <option>Times New Roman</option>
         </select>
         <select id="textSizeSelection">
+            <option value="" disabled selected>Размер шрифта</option>
             <option>1</option>
             <option>2</option>
             <option>3</option>
             <option>4</option>
         </select>
         <select id="textColorSelection">
-            <option class="heading" selected>- цвет -</option>
+            <option value="" disabled selected>Цвет текста</option>
             <option value="red">Красный</option>
             <option value="blue">Синий</option>
             <option value="green">Зеленый</option>
             <option value="black">Чёрный</option>
         </select>
         <select id="backgroundColorSelection">
-            <option class="heading" selected>- фон -</option>
+            <option value="" disabled selected>Цвет фона текста</option>
             <option value="#faa">Красень</option>
             <option value="#afa">Зелень</option>
             <option value="#aaf">Синь</option>
@@ -78,21 +84,21 @@
 
 </div>
 <div class="circle-button-container fixed-container-right">
-    <div class="circle-button">
+    <div id="btnNew" class="circle-button">
         <i class="fas fa-plus"></i>
     </div>
-    <div class="circle-button">
+    <div id="btnSave" class="circle-button">
         <i class="fas fa-file-download"></i>
     </div>
-    <div class="circle-button">
+    <div id="btnPrintText" class="circle-button">
         <i class="fas fa-print"></i>
     </div>
-    <div class="circle-button">
+    <div id="btnUpToHeader" class="circle-button">
         <i class="fas fa-chevron-up"></i>
     </div>
 </div>
 <div class="circle-button-container fixed-container-left">
-    <div class="circle-button">
+    <div id="btnClearText" class="circle-button">
         <i class="fas fa-broom"></i>
     </div>
 </div>
