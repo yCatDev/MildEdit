@@ -4,21 +4,97 @@
     <meta charset="UTF-8">
     <script src="scripts/main.js"></script>
     <link rel="stylesheet" href="styles/style.css">
+    <script src="https://kit.fontawesome.com/726e03ea95.js" crossorigin="anonymous"></script>
     <title>MildEdit - just another online text editor</title>
 </head>
 <body>
-    <div id="panel">
-        <h1 class="italic bolder">MildEdit <span class="italic">- Untiled</span></h1>
-        <div class="buttonGroup">
-            <p>Some text</p>
-        <div class="button">
-
-        </div><div class="button">
-
-        </div></div>
+<h1 class="text-logo">MildEdit</h1>
+<h2 class="text-logo text-lighter">Just another online text editor</h2>
+<h3 class="text-logo text-lighter text-italic">You are editing {FILE_NAME}</h3>
+<div id="panel">
+    <div class="panel-strip-top">
+        <select id="textFormatSelection">
+            <option value="p">Обычный текст</option>
+            <option value="h1">Загаловок - 1</option>
+            <option value="h2">Загаловок - 2</option>
+            <option value="h3">Загаловок - 3</option>
+            <option value="h4">Загаловок - 4</option>
+            <option value="h5">Загаловок - 5</option>
+        </select>
+        <select id="textFontSelection">
+            <option>Arial</option>
+            <option>Arial Black</option>
+            <option>Courier New</option>
+            <option>Times New Roman</option>
+        </select>
+        <select id="textSizeSelection">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+        </select>
+        <select id="textColorSelection">
+            <option class="heading" selected>- цвет -</option>
+            <option value="red">Красный</option>
+            <option value="blue">Синий</option>
+            <option value="green">Зеленый</option>
+            <option value="black">Чёрный</option>
+        </select>
+        <select id="backgroundColorSelection">
+            <option class="heading" selected>- фон -</option>
+            <option value="#faa">Красень</option>
+            <option value="#afa">Зелень</option>
+            <option value="#aaf">Синь</option>
+        </select>
     </div>
-    <div id="editor" contenteditable="true">
 
+    <div class="panel-strip-bottom">
+        <div id="btnRemoveTextFormat" class="button"><i class="fas fa-remove-format"></i></div>
+        <div class="button-group">
+            <div id="btnSetTextBold" class="button"><i class="fas fa-bold"></i></div>
+            <div id="btnSetTextItalic" class="button"><i class="fas fa-italic"></i></div>
+            <div id="btnSetTextUnderline" class="button"><i class="fas fa-underline"></i></div>
+        </div>
+        <div class="button-group">
+            <div id="btnSetTextAlignLeft" class="button"><i class="fas fa-align-left"></i></div>
+            <div id="btnSetTextAlignCenter" class="button"><i class="fas fa-align-center"></i></div>
+            <div id="btnSetTextAlignRight" class="button"><i class="fas fa-align-right"></i></div>
+        </div>
+        <div class="button-group">
+            <div id="btnCreateNumList" class="button"><i class="fas fa-list-ol"></i></div>
+            <div id="btnCreateList" class="button"><i class="fas fa-list-ul"></i></div>
+        </div>
+        <div class="button-group">
+            <div id="btnOutdent" class="button"><i class="fas fa-outdent"></i></div>
+            <div id="btnIndent" class="button"><i class="fas fa-indent"></i></div>
+        </div>
+        <div class="button-group">
+            <div id="btnInsertQuote" class="button"><i class="fas fa-quote-left"></i></div>
+            <div id="btnInsertLink" class="button"><i class="fas fa-link"></i></div>
+        </div>
     </div>
+</div>
+<div id="editor" contenteditable="true">
+
+</div>
+<div class="circle-button-container fixed-container-right">
+    <div class="circle-button">
+        <i class="fas fa-plus"></i>
+    </div>
+    <div class="circle-button">
+        <i class="fas fa-file-download"></i>
+    </div>
+    <div class="circle-button">
+        <i class="fas fa-print"></i>
+    </div>
+    <div class="circle-button">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+</div>
+<div class="circle-button-container fixed-container-left">
+    <div class="circle-button">
+        <i class="fas fa-broom"></i>
+    </div>
+</div>
 </body>
 </html>
