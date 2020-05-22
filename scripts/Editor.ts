@@ -9,26 +9,44 @@ class Editor
         this.editorElement = document.getElementById(id);
         this.filenameElement = document.getElementById("filename");
 
-        this.SetUpButtons();
-        this.SetUpCtrlBtn();
-    }
+        // @ts-ignore
+        key('ctrl+s', ()=> {this.ExportDocxFile(); return false;});
+        // @ts-ignore
+        key('ctrl+a', ()=> {this.Format('selectAll'); return false;});
 
+        (this.editorElement as HTMLElement).onblur = ev => {
+            this.RestoreFocus();
+        }
+
+        this.SetUpButtons();
+        //this.SetUpCtrlBtn();
+    }
+    public ClearSelection()
+    {
+        if (window.getSelection) {window.getSelection().removeAllRanges();}
+        else if (document.getSelection()) {document.getSelection().empty();}
+        this.RestoreFocus();
+    }
     private SetUpCtrlBtn()
     {
         let editor = this.editorElement;
+        //document.addEventListener('focusout', ev => (this.editorElement as HTMLElement).focus());
         document.addEventListener('keydown', function(event) {
-            if (event.keyCode === 17) {   // when ctrl is pressed
+            if (event.keyCode === 18)  {
                 // @ts-ignore
-                editor.contentEditable = false; // disable contentEditable
+                editor.contentEditable = false;
             }
+
         }, false);
 
         document.addEventListener('keyup', function(event) {
-            if (event.keyCode === 17) {          // when ctrl is released
+            if (event.keyCode === 18) {
                 // @ts-ignore
-                editor.contentEditable = true;  // reenable contentEditable
-            }
+                editor.contentEditable = true;
+
+            }(editor as HTMLElement).focus();window.focus();
         }, false);
+
     }
 
     private SetUpButtons()
@@ -71,11 +89,12 @@ class Editor
                 return;
             }}else this.editorElement.innerHTML = "";
 
-        //this.RestoreFocus();
+        this.RestoreFocus();
     }
 
     public RestoreFocus()
     {
+        window.focus();
         (this.editorElement as HTMLElement).focus();
     }
 
@@ -145,4 +164,10 @@ class Editor
 
         return clonedDocumentElement;
     }
+
+    public Blur()
+    {
+        (this.editorElement as HTMLElement).blur();
+    }
+
 }

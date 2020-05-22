@@ -6,13 +6,20 @@ var Panel = /** @class */ (function () {
         this.isOnPanel = false;
         this.panelElement = document.getElementById(id);
         this.editor = editor;
-        document.addEventListener("mouseup", function () { _this.OnTextSelecting(); });
-        document.addEventListener("mousedown", function () { _this.HidePanel(); });
+        document.addEventListener("mousemove", function () { _this.OnTextSelecting(); });
         //this.panelElement.addEventListener("click", ()=>{this.editor.RestoreFocus()});
-        var tmp = this.panelElement;
-        tmp.addEventListener("click", function (ev) { return _this.OnClick(); });
-        tmp.addEventListener("mouseenter", function (ev) { return _this.isOnPanel = true; });
-        tmp.addEventListener("mouseleave", function (ev) { return _this.isOnPanel = false; });
+        this.panelHTMLElement = this.panelElement;
+        document.addEventListener('mousedown', function (event) {
+            if (!_this.isOnPanel) {
+                console.log("s1");
+                editor.ClearSelection();
+                console.log("s2");
+                _this.HidePanel();
+            }
+        });
+        document.addEventListener("click", function (ev) { return _this.OnClick(); });
+        this.panelHTMLElement.addEventListener("mouseenter", function (ev) { return _this.isOnPanel = true; });
+        this.panelHTMLElement.addEventListener("mouseleave", function (ev) { return _this.isOnPanel = false; });
         var selectTextFormat = document.getElementById("textFormatSelection");
         selectTextFormat.addEventListener("change", function () { return _this.editor.Format('formatblock', selectTextFormat.selectedOptions[0].value); });
         var selectTextFont = document.getElementById("textFontSelection");
@@ -45,24 +52,34 @@ var Panel = /** @class */ (function () {
             var fileList = event.target.files;
             _this.editor.Format("insertImage", URL.createObjectURL(fileList[0]));
         });
+        // @ts-ignore
+        key('ctrl+space', function () { _this.ShowPanel(window.getSelection()); });
+        // @ts-ignore
+        key("escape", function () { _this.HidePanel(); editor.ClearSelection(); window.focus(); return false; });
+        // @ts-ignore
+        key('ctrl+a', function () { _this.OnTextSelecting(); });
     }
     Panel.prototype.OnClick = function () {
     };
     Panel.prototype.HidePanel = function () {
-        if (this.show && !this.isOnPanel) {
+        if (this.show) {
             this.panelElement.className = "";
             this.show = false;
+            console.log("hide");
         }
+    };
+    Panel.prototype.ShowPanel = function (selection) {
+        this.show = true;
+        this.panelElement.className = "panel-show";
+        var oRange = selection.getRangeAt(0); //get the text range
+        var oRect = oRange.getBoundingClientRect();
+        this.panelElement.style.left = oRect.left + "px";
+        this.panelElement.style.top = oRect.bottom + "px";
     };
     Panel.prototype.OnTextSelecting = function () {
         var selection = window.getSelection();
         if (selection.toString() != "") {
-            this.show = true;
-            this.panelElement.className = "panel-show";
-            var oRange = selection.getRangeAt(0); //get the text range
-            var oRect = oRange.getBoundingClientRect();
-            this.panelElement.style.left = oRect.left + "px";
-            this.panelElement.style.top = oRect.bottom + "px";
+            this.ShowPanel(selection);
         }
     };
     return Panel;

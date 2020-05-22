@@ -1,24 +1,44 @@
 var Editor = /** @class */ (function () {
     function Editor(id) {
+        var _this = this;
         if (id === void 0) { id = "editor"; }
         this.editorElement = document.getElementById(id);
         this.filenameElement = document.getElementById("filename");
+        // @ts-ignore
+        key('ctrl+s', function () { _this.ExportDocxFile(); return false; });
+        // @ts-ignore
+        key('ctrl+a', function () { _this.Format('selectAll'); return false; });
+        this.editorElement.onblur = function (ev) {
+            _this.RestoreFocus();
+        };
         this.SetUpButtons();
-        this.SetUpCtrlBtn();
+        //this.SetUpCtrlBtn();
     }
+    Editor.prototype.ClearSelection = function () {
+        if (window.getSelection) {
+            window.getSelection().removeAllRanges();
+        }
+        else if (document.getSelection()) {
+            document.getSelection().empty();
+        }
+        this.RestoreFocus();
+    };
     Editor.prototype.SetUpCtrlBtn = function () {
         var editor = this.editorElement;
+        //document.addEventListener('focusout', ev => (this.editorElement as HTMLElement).focus());
         document.addEventListener('keydown', function (event) {
-            if (event.keyCode === 17) { // when ctrl is pressed
+            if (event.keyCode === 18) {
                 // @ts-ignore
-                editor.contentEditable = false; // disable contentEditable
+                editor.contentEditable = false;
             }
         }, false);
         document.addEventListener('keyup', function (event) {
-            if (event.keyCode === 17) { // when ctrl is released
+            if (event.keyCode === 18) {
                 // @ts-ignore
-                editor.contentEditable = true; // reenable contentEditable
+                editor.contentEditable = true;
             }
+            editor.focus();
+            window.focus();
         }, false);
     };
     Editor.prototype.SetUpButtons = function () {
@@ -55,9 +75,10 @@ var Editor = /** @class */ (function () {
         }
         else
             this.editorElement.innerHTML = "";
-        //this.RestoreFocus();
+        this.RestoreFocus();
     };
     Editor.prototype.RestoreFocus = function () {
+        window.focus();
         this.editorElement.focus();
     };
     Editor.prototype.ExportDocxFile = function () {
@@ -107,6 +128,9 @@ var Editor = /** @class */ (function () {
         }
         canvas.remove();
         return clonedDocumentElement;
+    };
+    Editor.prototype.Blur = function () {
+        this.editorElement.blur();
     };
     return Editor;
 }());

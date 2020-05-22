@@ -2,6 +2,7 @@ class Panel
 {
     private readonly editor: Editor;
     private readonly panelElement: Element;
+    private readonly panelHTMLElement: HTMLElement;
     private show = false;
     private isOnPanel = false;
 
@@ -9,16 +10,25 @@ class Panel
         this.panelElement = document.getElementById(id);
         this.editor = editor;
 
-        document.addEventListener("mouseup", ()=>{this.OnTextSelecting()});
-        document.addEventListener("mousedown", ()=>{this.HidePanel()});
+        document.addEventListener("mousemove", ()=>{this.OnTextSelecting()});
+
 
         //this.panelElement.addEventListener("click", ()=>{this.editor.RestoreFocus()});
 
-        let tmp = (this.panelElement as HTMLElement);
-        tmp.addEventListener("click", ev => this.OnClick());
+        this.panelHTMLElement = (this.panelElement as HTMLElement);
 
-        tmp.addEventListener("mouseenter", ev => this.isOnPanel = true);
-        tmp.addEventListener("mouseleave", ev => this.isOnPanel = false);
+        document.addEventListener('mousedown',  event => {
+          if (!this.isOnPanel){
+            console.log("s1");
+              editor.ClearSelection();
+            console.log("s2");
+              this.HidePanel();
+          }
+        });
+        document.addEventListener("click", ev => this.OnClick());
+
+        this.panelHTMLElement.addEventListener("mouseenter", ev => this.isOnPanel = true);
+        this.panelHTMLElement.addEventListener("mouseleave", ev => this.isOnPanel = false);
 
 
         let selectTextFormat = document.getElementById("textFormatSelection") as HTMLSelectElement;
@@ -56,10 +66,15 @@ class Panel
         document.getElementById("btnInsertQuote").addEventListener("click",()=>{this.editor.Format('formatblock','blockquote')});
         document.getElementById("btnInsertImage").addEventListener("click",()=>{fileSelector.click()});
 
-
         fileSelector.addEventListener('change', (event) => {
             const fileList = (<HTMLInputElement>event.target).files;
             this.editor.Format("insertImage", URL.createObjectURL(fileList[0]))});
+        // @ts-ignore
+        key('ctrl+space', ()=> {this.ShowPanel(window.getSelection());});
+        // @ts-ignore
+        key("escape", ()=> {this.HidePanel();editor.ClearSelection(); window.focus(); return false;});
+        // @ts-ignore
+        key('ctrl+a', ()=>{ this.OnTextSelecting()});
 
     }
 
@@ -70,11 +85,23 @@ class Panel
 
     private HidePanel()
     {
-        if (this.show && !this.isOnPanel)
+        if (this.show)
         {
             this.panelElement.className="";
             this.show = false;
+            console.log("hide");
         }
+    }
+
+    private ShowPanel(selection: Selection)
+    {
+        this.show = true;
+        this.panelElement.className="panel-show";
+
+        let oRange = selection.getRangeAt(0); //get the text range
+        let oRect = oRange.getBoundingClientRect();
+        (this.panelElement as HTMLElement).style.left = oRect.left+"px";
+        (this.panelElement as HTMLElement).style.top = oRect.bottom+"px";
     }
 
     private OnTextSelecting()
@@ -82,13 +109,7 @@ class Panel
         let selection = window.getSelection();
         if (selection.toString()!="")
         {
-            this.show = true;
-            this.panelElement.className="panel-show";
-
-            let oRange = selection.getRangeAt(0); //get the text range
-            let oRect = oRange.getBoundingClientRect();
-            (this.panelElement as HTMLElement).style.left = oRect.left+"px";
-            (this.panelElement as HTMLElement).style.top = oRect.bottom+"px";
+            this.ShowPanel(selection);
         }
     }
 
