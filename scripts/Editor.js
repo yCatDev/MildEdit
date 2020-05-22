@@ -4,6 +4,19 @@ var Editor = /** @class */ (function () {
         this.editorElement = document.getElementById(id);
         this.filenameElement = document.getElementById("filename");
         this.SetUpButtons();
+        var editor = this.editorElement;
+        document.addEventListener('keydown', function (event) {
+            if (event.keyCode === 17) { // when ctrl is pressed
+                // @ts-ignore
+                editor.contentEditable = false; // disable contentEditable
+            }
+        }, false);
+        document.addEventListener('keyup', function (event) {
+            if (event.keyCode === 17) { // when ctrl is released
+                // @ts-ignore
+                editor.contentEditable = true; // reenable contentEditable
+            }
+        }, false);
     }
     Editor.prototype.SetUpButtons = function () {
         var _this = this;

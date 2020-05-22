@@ -2,7 +2,7 @@
 
 class Editor
 {
-    private editorElement: Element;
+    private readonly editorElement: Element;
     private filenameElement: Element;
 
     constructor(id = "editor") {
@@ -10,6 +10,20 @@ class Editor
         this.filenameElement = document.getElementById("filename");
 
         this.SetUpButtons();
+        let editor = this.editorElement;
+        document.addEventListener('keydown', function(event) {
+            if (event.keyCode === 17) {   // when ctrl is pressed
+                // @ts-ignore
+                editor.contentEditable = false; // disable contentEditable
+            }
+        }, false);
+
+        document.addEventListener('keyup', function(event) {
+            if (event.keyCode === 17) {          // when ctrl is released
+                // @ts-ignore
+                editor.contentEditable = true;  // reenable contentEditable
+            }
+        }, false);
     }
 
     private SetUpButtons()
