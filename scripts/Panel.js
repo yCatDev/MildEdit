@@ -53,7 +53,7 @@ var Panel = /** @class */ (function () {
             _this.editor.Format("insertImage", URL.createObjectURL(fileList[0]));
         });
         // @ts-ignore
-        key('ctrl+space', function () { _this.ShowPanel(window.getSelection()); });
+        key('ctrl+space', function () { _this.ShowPanel(document.getSelection()); });
         // @ts-ignore
         key("escape", function () { _this.HidePanel(); editor.ClearSelection(); window.focus(); return false; });
         // @ts-ignore

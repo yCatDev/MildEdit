@@ -70,7 +70,7 @@ class Panel
             const fileList = (<HTMLInputElement>event.target).files;
             this.editor.Format("insertImage", URL.createObjectURL(fileList[0]))});
         // @ts-ignore
-        key('ctrl+space', ()=> {this.ShowPanel(window.getSelection());});
+        key('ctrl+space', ()=> {this.ShowPanel(document.getSelection());});
         // @ts-ignore
         key("escape", ()=> {this.HidePanel();editor.ClearSelection(); window.focus(); return false;});
         // @ts-ignore
