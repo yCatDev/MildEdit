@@ -4,6 +4,9 @@ var Editor = /** @class */ (function () {
         this.editorElement = document.getElementById(id);
         this.filenameElement = document.getElementById("filename");
         this.SetUpButtons();
+        this.SetUpCtrlBtn();
+    }
+    Editor.prototype.SetUpCtrlBtn = function () {
         var editor = this.editorElement;
         document.addEventListener('keydown', function (event) {
             if (event.keyCode === 17) { // when ctrl is pressed
@@ -17,7 +20,7 @@ var Editor = /** @class */ (function () {
                 editor.contentEditable = true; // reenable contentEditable
             }
         }, false);
-    }
+    };
     Editor.prototype.SetUpButtons = function () {
         var _this = this;
         document.getElementById("btnNew").addEventListener("click", function () { return _this.NewFile(); });
@@ -31,9 +34,10 @@ var Editor = /** @class */ (function () {
         document.execCommand(command, true, value);
     };
     Editor.prototype.NewFile = function () {
-        this.ClearText();
-        this.filenameElement.innerHTML = prompt("Enter a new name of file", "Untitled");
-        //this.RestoreFocus();
+        if (confirm("Are you sure want to create new file")) {
+            this.ClearText();
+            this.filenameElement.innerHTML = prompt("Enter a new name of file", "Untitled");
+        }
     };
     Editor.prototype.PrintText = function () {
         var oPrntWin = window.open("", "_blank", "width=450,height=470,left=400,top=100,menubar=yes,toolbar=no,location=no,scrollbars=yes");
@@ -49,7 +53,8 @@ var Editor = /** @class */ (function () {
                 return;
             }
         }
-        this.editorElement.innerHTML = "";
+        else
+            this.editorElement.innerHTML = "";
         //this.RestoreFocus();
     };
     Editor.prototype.RestoreFocus = function () {

@@ -10,6 +10,11 @@ class Editor
         this.filenameElement = document.getElementById("filename");
 
         this.SetUpButtons();
+        this.SetUpCtrlBtn();
+    }
+
+    private SetUpCtrlBtn()
+    {
         let editor = this.editorElement;
         document.addEventListener('keydown', function(event) {
             if (event.keyCode === 17) {   // when ctrl is pressed
@@ -44,10 +49,10 @@ class Editor
 
     private NewFile()
     {
-        this.ClearText();
-        this.filenameElement.innerHTML = prompt("Enter a new name of file", "Untitled");
-
-        //this.RestoreFocus();
+        if (confirm("Are you sure want to create new file")) {
+            this.ClearText();
+            this.filenameElement.innerHTML = prompt("Enter a new name of file", "Untitled");
+        }
     }
 
     private PrintText()
@@ -64,8 +69,7 @@ class Editor
             if (confirm("Are you sure you want to clear text?")){
                 this.editorElement.innerHTML = "";
                 return;
-            }}
-        this.editorElement.innerHTML = "";
+            }}else this.editorElement.innerHTML = "";
 
         //this.RestoreFocus();
     }
