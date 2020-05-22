@@ -37,6 +37,30 @@ class Panel
         selectBackgroundColor.addEventListener("change",()=>this.editor.Format('backcolor',selectBackgroundColor.selectedOptions[0].value));
 
         document.getElementById("btnRemoveTextFormat").addEventListener("click",()=>{this.editor.Format("removeFormat"); alert("clicked")});
+        document.getElementById("btnSetTextBold").addEventListener("click",()=>{this.editor.Format("bold")});
+        document.getElementById("btnSetTextItalic").addEventListener("click",()=>{this.editor.Format("italic")});
+        document.getElementById("btnSetTextUnderline").addEventListener("click",()=>{this.editor.Format("underline")});
+        document.getElementById("btnSetTextStrikeThrough").addEventListener("click",()=>{this.editor.Format("strikeThrough")});
+
+        document.getElementById("btnSetTextAlignLeft").addEventListener("click",()=>{this.editor.Format("justifyLeft")});
+        document.getElementById("btnSetTextAlignCenter").addEventListener("click",()=>{this.editor.Format("justifyCenter")});
+        document.getElementById("btnSetTextAlignRight").addEventListener("click",()=>{this.editor.Format("justifyRight")});
+        document.getElementById("btnSetTextAlignJustify").addEventListener("click",()=>{this.editor.Format("justifyFull")});
+        const fileSelector = document.getElementById('file-selector');
+
+        document.getElementById("btnCreateNumList").addEventListener("click",()=>{this.editor.Format("insertorderedlist")});
+        document.getElementById("btnCreateList").addEventListener("click",()=>{this.editor.Format("insertunorderedlist")});
+        document.getElementById("btnIndent").addEventListener("click",()=>{this.editor.Format("indent")});
+        document.getElementById("btnOutdent").addEventListener("click",()=>{this.editor.Format("outdent")});
+        document.getElementById("btnInsertLink").addEventListener("click",()=>{let lnk=prompt('Введите ваш URL','http:\/\/');if(lnk&&lnk!=''&&lnk!='http://') this.editor.Format('createlink',lnk);});
+        document.getElementById("btnInsertQuote").addEventListener("click",()=>{this.editor.Format('formatblock','blockquote')});
+        document.getElementById("btnInsertImage").addEventListener("click",()=>{fileSelector.click()});
+
+
+        fileSelector.addEventListener('change', (event) => {
+            const fileList = (<HTMLInputElement>event.target).files;
+            this.editor.Format("insertImage", URL.createObjectURL(fileList[0]))});
+
     }
 
     private OnClick()

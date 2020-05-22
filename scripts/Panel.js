@@ -24,6 +24,27 @@ var Panel = /** @class */ (function () {
         var selectBackgroundColor = document.getElementById("backgroundColorSelection");
         selectBackgroundColor.addEventListener("change", function () { return _this.editor.Format('backcolor', selectBackgroundColor.selectedOptions[0].value); });
         document.getElementById("btnRemoveTextFormat").addEventListener("click", function () { _this.editor.Format("removeFormat"); alert("clicked"); });
+        document.getElementById("btnSetTextBold").addEventListener("click", function () { _this.editor.Format("bold"); });
+        document.getElementById("btnSetTextItalic").addEventListener("click", function () { _this.editor.Format("italic"); });
+        document.getElementById("btnSetTextUnderline").addEventListener("click", function () { _this.editor.Format("underline"); });
+        document.getElementById("btnSetTextStrikeThrough").addEventListener("click", function () { _this.editor.Format("strikeThrough"); });
+        document.getElementById("btnSetTextAlignLeft").addEventListener("click", function () { _this.editor.Format("justifyLeft"); });
+        document.getElementById("btnSetTextAlignCenter").addEventListener("click", function () { _this.editor.Format("justifyCenter"); });
+        document.getElementById("btnSetTextAlignRight").addEventListener("click", function () { _this.editor.Format("justifyRight"); });
+        document.getElementById("btnSetTextAlignJustify").addEventListener("click", function () { _this.editor.Format("justifyFull"); });
+        var fileSelector = document.getElementById('file-selector');
+        document.getElementById("btnCreateNumList").addEventListener("click", function () { _this.editor.Format("insertorderedlist"); });
+        document.getElementById("btnCreateList").addEventListener("click", function () { _this.editor.Format("insertunorderedlist"); });
+        document.getElementById("btnIndent").addEventListener("click", function () { _this.editor.Format("indent"); });
+        document.getElementById("btnOutdent").addEventListener("click", function () { _this.editor.Format("outdent"); });
+        document.getElementById("btnInsertLink").addEventListener("click", function () { var lnk = prompt('Введите ваш URL', 'http:\/\/'); if (lnk && lnk != '' && lnk != 'http://')
+            _this.editor.Format('createlink', lnk); });
+        document.getElementById("btnInsertQuote").addEventListener("click", function () { _this.editor.Format('formatblock', 'blockquote'); });
+        document.getElementById("btnInsertImage").addEventListener("click", function () { fileSelector.click(); });
+        fileSelector.addEventListener('change', function (event) {
+            var fileList = event.target.files;
+            _this.editor.Format("insertImage", URL.createObjectURL(fileList[0]));
+        });
     }
     Panel.prototype.OnClick = function () {
     };

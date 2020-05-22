@@ -10,12 +10,12 @@ var Editor = /** @class */ (function () {
         document.getElementById("btnNew").addEventListener("click", function () { return _this.NewFile(); });
         document.getElementById("btnClearText").addEventListener("click", function () { return _this.ClearText(true); });
         document.getElementById("btnPrintText").addEventListener("click", function () { return _this.PrintText(); });
-        document.getElementById("btnSave").addEventListener("click", function () { return _this.Export2Doc(_this.editorElement.id); });
+        document.getElementById("btnSave").addEventListener("click", function () { return _this.ExportDocxFile(); });
     };
     Editor.prototype.Format = function (command, value) {
         if (value === void 0) { value = ""; }
-        document.execCommand(command, true, value);
         this.RestoreFocus();
+        document.execCommand(command, true, value);
     };
     Editor.prototype.NewFile = function () {
         this.ClearText();
@@ -42,33 +42,53 @@ var Editor = /** @class */ (function () {
     Editor.prototype.RestoreFocus = function () {
         this.editorElement.focus();
     };
-    Editor.prototype.Export2Doc = function (element, filename) {
-        if (filename === void 0) { filename = ''; }
-        var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
-        var postHtml = "</body></html>";
-        var html = preHtml + document.getElementById(element).innerHTML + postHtml;
-        var blob = new Blob(['\ufeff', html], {
-            type: 'application/msword'
-        });
-        // Specify link url
-        var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
-        // Specify file name
-        filename = filename ? filename + '.doc' : 'document.doc';
-        // Create download link element
-        var downloadLink = document.createElement("a");
-        document.body.appendChild(downloadLink);
+    Editor.prototype.ExportDocxFile = function () {
+        var documentElement = this.editorElement;
+        if (!window.Blob) {
+            alert('Your legacy browser does not support this action.');
+            return;
+        }
+        var processedDocumentElement = this.ConvertImagesToBase64(documentElement);
+        var html = processedDocumentElement.innerHTML;
+        // @ts-ignore
+        var blob = htmlDocx.asBlob(html);
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement('A');
+        link.href = url;
+        // Set default file name.
+        // Word will append file extension - do not add an extension here.
+        //@ts-ignore
+        link.download = this.filenameElement.innerHTML;
+        document.body.appendChild(link);
         if (navigator.msSaveOrOpenBlob) {
-            navigator.msSaveOrOpenBlob(blob, filename);
+            navigator.msSaveOrOpenBlob(blob, this.filenameElement.innerHTML + '.docx'); // IE10-11
         }
         else {
-            // Create a link to the file
-            downloadLink.href = url;
-            // Setting the file name
-            downloadLink.download = filename;
-            //triggering the function
-            downloadLink.click();
+            link.click(); // other browsers
         }
-        document.body.removeChild(downloadLink);
+        document.body.removeChild(link);
+    };
+    Editor.prototype.ConvertImagesToBase64 = function (targetDocumentElement) {
+        var clonedDocumentElement = targetDocumentElement.cloneNode(true);
+        var regularImages = targetDocumentElement.querySelectorAll("img");
+        var clonedImages = clonedDocumentElement.querySelectorAll("img");
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        for (var i = 0; i < regularImages.length; i++) {
+            var regularImgElement = regularImages[i];
+            var clonedImgElement = clonedImages[i];
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            canvas.width = regularImgElement.width;
+            canvas.height = regularImgElement.height;
+            ctx.scale(regularImgElement.width / regularImgElement.naturalWidth, regularImgElement.height / regularImgElement.naturalHeight);
+            ctx.drawImage(regularImgElement, 0, 0);
+            // by default toDataURL() produces png image, but you can also export to jpeg
+            // checkout function's documentation for more details
+            var dataURL = canvas.toDataURL();
+            clonedImgElement.setAttribute('src', dataURL);
+        }
+        canvas.remove();
+        return clonedDocumentElement;
     };
     return Editor;
 }());
