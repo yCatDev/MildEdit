@@ -69,7 +69,7 @@ class Panel
         document.getElementById("btnCreateList").addEventListener("click",()=>{this.editor.Format("insertunorderedlist")});
         document.getElementById("btnIndent").addEventListener("click",()=>{this.editor.Format("indent")});
         document.getElementById("btnOutdent").addEventListener("click",()=>{this.editor.Format("outdent")});
-        document.getElementById("btnInsertLink").addEventListener("click",()=>{let lnk=prompt('Введите ваш URL','http:\/\/');if(lnk&&lnk!=''&&lnk!='http://') this.editor.Format('createlink',lnk);});
+        document.getElementById("btnInsertLink").addEventListener("click",()=>{this.OnLinkButtonClick()});
         document.getElementById("btnInsertQuote").addEventListener("click",()=>{this.editor.Format('formatblock','blockquote')});
         document.getElementById("btnInsertImage").addEventListener("click",()=>{fileSelector.click()});
 
@@ -87,6 +87,12 @@ class Panel
     private OnClick()
     {
 
+    }
+
+    private OnLinkButtonClick()
+    {
+        let link=prompt('Enter the URL','http:\/\/');
+        if(link&&link!=''&&link!='http://') this.editor.Format('createlink',link);
     }
 
     private HidePanel()

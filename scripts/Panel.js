@@ -48,8 +48,7 @@ var Panel = /** @class */ (function () {
         document.getElementById("btnCreateList").addEventListener("click", function () { _this.editor.Format("insertunorderedlist"); });
         document.getElementById("btnIndent").addEventListener("click", function () { _this.editor.Format("indent"); });
         document.getElementById("btnOutdent").addEventListener("click", function () { _this.editor.Format("outdent"); });
-        document.getElementById("btnInsertLink").addEventListener("click", function () { var lnk = prompt('Введите ваш URL', 'http:\/\/'); if (lnk && lnk != '' && lnk != 'http://')
-            _this.editor.Format('createlink', lnk); });
+        document.getElementById("btnInsertLink").addEventListener("click", function () { _this.OnLinkButtonClick(); });
         document.getElementById("btnInsertQuote").addEventListener("click", function () { _this.editor.Format('formatblock', 'blockquote'); });
         document.getElementById("btnInsertImage").addEventListener("click", function () { fileSelector.click(); });
         // @ts-ignore
@@ -60,6 +59,11 @@ var Panel = /** @class */ (function () {
         key('ctrl+a', function () { _this.OnTextSelecting(); });
     }
     Panel.prototype.OnClick = function () {
+    };
+    Panel.prototype.OnLinkButtonClick = function () {
+        var link = prompt('Enter the URL', 'http:\/\/');
+        if (link && link != '' && link != 'http://')
+            this.editor.Format('createlink', link);
     };
     Panel.prototype.HidePanel = function () {
         if (this.show) {
