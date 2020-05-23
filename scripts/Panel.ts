@@ -80,6 +80,8 @@ class Panel
         // @ts-ignore
         key("escape", ()=> {this.HidePanel();editor.ClearSelection(); window.focus(); return false;});
         // @ts-ignore
+        key("backspace", ()=> {this.HidePanel();});
+        // @ts-ignore
         key('ctrl+a', ()=>{ this.OnTextSelecting()});
 
     }

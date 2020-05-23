@@ -54,6 +54,8 @@ var Panel = /** @class */ (function () {
         // @ts-ignore
         key("escape", function () { _this.HidePanel(); editor.ClearSelection(); window.focus(); return false; });
         // @ts-ignore
+        key("backspace", function () { _this.HidePanel(); });
+        // @ts-ignore
         key('ctrl+a', function () { _this.OnTextSelecting(); });
     }
     Panel.prototype.OnClick = function () {
