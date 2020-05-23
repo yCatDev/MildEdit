@@ -6,6 +6,9 @@ class Panel
     private show = false;
     private isOnPanel = false;
 
+    private lastleft: string;
+    private lastbottom: string;
+
     constructor(editor: Editor, id = "panel") {
         this.panelElement = document.getElementById(id);
         this.editor = editor;
@@ -46,7 +49,7 @@ class Panel
         let selectBackgroundColor = document.getElementById("backgroundColorSelection") as HTMLSelectElement;
         selectBackgroundColor.addEventListener("change",()=>this.editor.Format('backcolor',selectBackgroundColor.selectedOptions[0].value));
 
-        document.getElementById("btnRemoveTextFormat").addEventListener("click",()=>{this.editor.Format("removeFormat"); alert("clicked")});
+        document.getElementById("btnRemoveTextFormat").addEventListener("click",()=>{this.editor.Format("removeFormat");});
         document.getElementById("btnSetTextBold").addEventListener("click",()=>{this.editor.Format("bold")});
         document.getElementById("btnSetTextItalic").addEventListener("click",()=>{this.editor.Format("italic")});
         document.getElementById("btnSetTextUnderline").addEventListener("click",()=>{this.editor.Format("underline")});
@@ -56,7 +59,11 @@ class Panel
         document.getElementById("btnSetTextAlignCenter").addEventListener("click",()=>{this.editor.Format("justifyCenter")});
         document.getElementById("btnSetTextAlignRight").addEventListener("click",()=>{this.editor.Format("justifyRight")});
         document.getElementById("btnSetTextAlignJustify").addEventListener("click",()=>{this.editor.Format("justifyFull")});
+
         const fileSelector = document.getElementById('file-selector');
+        fileSelector.addEventListener('change', (event) => {
+            const fileList = (<HTMLInputElement>event.target).files;
+            this.editor.Format("insertImage", URL.createObjectURL(fileList[0]))});
 
         document.getElementById("btnCreateNumList").addEventListener("click",()=>{this.editor.Format("insertorderedlist")});
         document.getElementById("btnCreateList").addEventListener("click",()=>{this.editor.Format("insertunorderedlist")});
@@ -66,9 +73,8 @@ class Panel
         document.getElementById("btnInsertQuote").addEventListener("click",()=>{this.editor.Format('formatblock','blockquote')});
         document.getElementById("btnInsertImage").addEventListener("click",()=>{fileSelector.click()});
 
-        fileSelector.addEventListener('change', (event) => {
-            const fileList = (<HTMLInputElement>event.target).files;
-            this.editor.Format("insertImage", URL.createObjectURL(fileList[0]))});
+
+
         // @ts-ignore
         key('ctrl+space', ()=> {this.ShowPanel(document.getSelection());});
         // @ts-ignore
@@ -97,11 +103,14 @@ class Panel
     {
         this.show = true;
         this.panelElement.className="panel-show";
-
         let oRange = selection.getRangeAt(0); //get the text range
         let oRect = oRange.getBoundingClientRect();
-        (this.panelElement as HTMLElement).style.left = oRect.left+"px";
-        (this.panelElement as HTMLElement).style.top = oRect.bottom+"px";
+        if (oRect.left != 0 || oRect.right != 0){
+        this.lastleft = (this.panelElement as HTMLElement).style.left = oRect.left+"px";
+        this.lastbottom = (this.panelElement as HTMLElement).style.top = oRect.bottom+"px";
+        }else {
+
+        }
     }
 
     private OnTextSelecting()

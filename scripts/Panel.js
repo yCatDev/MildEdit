@@ -30,7 +30,7 @@ var Panel = /** @class */ (function () {
         selectTextColor.addEventListener("change", function () { return _this.editor.Format('forecolor', selectTextColor.selectedOptions[0].value); });
         var selectBackgroundColor = document.getElementById("backgroundColorSelection");
         selectBackgroundColor.addEventListener("change", function () { return _this.editor.Format('backcolor', selectBackgroundColor.selectedOptions[0].value); });
-        document.getElementById("btnRemoveTextFormat").addEventListener("click", function () { _this.editor.Format("removeFormat"); alert("clicked"); });
+        document.getElementById("btnRemoveTextFormat").addEventListener("click", function () { _this.editor.Format("removeFormat"); });
         document.getElementById("btnSetTextBold").addEventListener("click", function () { _this.editor.Format("bold"); });
         document.getElementById("btnSetTextItalic").addEventListener("click", function () { _this.editor.Format("italic"); });
         document.getElementById("btnSetTextUnderline").addEventListener("click", function () { _this.editor.Format("underline"); });
@@ -40,6 +40,10 @@ var Panel = /** @class */ (function () {
         document.getElementById("btnSetTextAlignRight").addEventListener("click", function () { _this.editor.Format("justifyRight"); });
         document.getElementById("btnSetTextAlignJustify").addEventListener("click", function () { _this.editor.Format("justifyFull"); });
         var fileSelector = document.getElementById('file-selector');
+        fileSelector.addEventListener('change', function (event) {
+            var fileList = event.target.files;
+            _this.editor.Format("insertImage", URL.createObjectURL(fileList[0]));
+        });
         document.getElementById("btnCreateNumList").addEventListener("click", function () { _this.editor.Format("insertorderedlist"); });
         document.getElementById("btnCreateList").addEventListener("click", function () { _this.editor.Format("insertunorderedlist"); });
         document.getElementById("btnIndent").addEventListener("click", function () { _this.editor.Format("indent"); });
@@ -48,10 +52,6 @@ var Panel = /** @class */ (function () {
             _this.editor.Format('createlink', lnk); });
         document.getElementById("btnInsertQuote").addEventListener("click", function () { _this.editor.Format('formatblock', 'blockquote'); });
         document.getElementById("btnInsertImage").addEventListener("click", function () { fileSelector.click(); });
-        fileSelector.addEventListener('change', function (event) {
-            var fileList = event.target.files;
-            _this.editor.Format("insertImage", URL.createObjectURL(fileList[0]));
-        });
         // @ts-ignore
         key('ctrl+space', function () { _this.ShowPanel(document.getSelection()); });
         // @ts-ignore
@@ -73,8 +73,12 @@ var Panel = /** @class */ (function () {
         this.panelElement.className = "panel-show";
         var oRange = selection.getRangeAt(0); //get the text range
         var oRect = oRange.getBoundingClientRect();
-        this.panelElement.style.left = oRect.left + "px";
-        this.panelElement.style.top = oRect.bottom + "px";
+        if (oRect.left != 0 || oRect.right != 0) {
+            this.lastleft = this.panelElement.style.left = oRect.left + "px";
+            this.lastbottom = this.panelElement.style.top = oRect.bottom + "px";
+        }
+        else {
+        }
     };
     Panel.prototype.OnTextSelecting = function () {
         var selection = window.getSelection();

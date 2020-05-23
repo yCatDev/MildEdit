@@ -4,6 +4,7 @@ body{
     background-color: #000a12;
     font-family: 'Roboto', sans-serif;
     color: white;
+
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
@@ -58,6 +59,11 @@ option:focus {
 
 #editor:focus {
     outline: none;
+}
+
+#file-selector
+{
+    display: none;
 }
 
 #panel

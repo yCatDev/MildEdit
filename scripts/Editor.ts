@@ -48,7 +48,10 @@ class Editor
         }, false);
 
     }
-
+    public GetEditorElement(): Element
+    {
+        return this.editorElement;
+    }
     private SetUpButtons()
     {
         document.getElementById("btnNew").addEventListener("click",()=>this.NewFile());

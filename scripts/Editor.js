@@ -41,6 +41,9 @@ var Editor = /** @class */ (function () {
             window.focus();
         }, false);
     };
+    Editor.prototype.GetEditorElement = function () {
+        return this.editorElement;
+    };
     Editor.prototype.SetUpButtons = function () {
         var _this = this;
         document.getElementById("btnNew").addEventListener("click", function () { return _this.NewFile(); });
