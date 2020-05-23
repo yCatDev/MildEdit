@@ -22,9 +22,9 @@ class Panel
 
         document.addEventListener('mousedown',  event => {
           if (!this.isOnPanel){
-            console.log("s1");
+
               editor.ClearSelection();
-            console.log("s2");
+
               this.HidePanel();
           }
         });
@@ -105,26 +105,33 @@ class Panel
         }
     }
 
-    private ShowPanel(selection: Selection)
+    private ShowPanel()
     {
         this.show = true;
         this.panelElement.className="panel-show";
-        let oRange = selection.getRangeAt(0); //get the text range
-        let oRect = oRange.getBoundingClientRect();
-        if (oRect.left != 0 || oRect.right != 0){
-        this.lastleft = (this.panelElement as HTMLElement).style.left = oRect.left+"px";
-        this.lastbottom = (this.panelElement as HTMLElement).style.top = oRect.bottom+"px";
-        }else {
 
-        }
+
+        let pos = $(this.editor.GetEditorElement()).caret('offset');
+        console.log(pos);
+        this.lastleft = (this.panelElement as HTMLElement).style.left = pos.left+"px";
+        this.lastbottom = (this.panelElement as HTMLElement).style.top = (pos.top+pos.height)+""+"px";
     }
 
     private OnTextSelecting()
     {
-        let selection = window.getSelection();
+        let selection = document.getSelection();
         if (selection.toString()!="")
         {
-            this.ShowPanel(selection);
+            //this.ShowPanel();
+            this.show = true;
+            this.panelElement.className="panel-show";
+
+            let oRange = selection.getRangeAt(0); //get the text range
+            let oRect = oRange.getBoundingClientRect();
+            if (oRect.left != 0 || oRect.right != 0){
+                this.lastleft = (this.panelElement as HTMLElement).style.left = oRect.left+"px";
+                this.lastbottom = (this.panelElement as HTMLElement).style.top = oRect.bottom+"px";
+         }
         }
     }
 

@@ -11,9 +11,7 @@ var Panel = /** @class */ (function () {
         this.panelHTMLElement = this.panelElement;
         document.addEventListener('mousedown', function (event) {
             if (!_this.isOnPanel) {
-                console.log("s1");
                 editor.ClearSelection();
-                console.log("s2");
                 _this.HidePanel();
             }
         });
@@ -72,22 +70,26 @@ var Panel = /** @class */ (function () {
             console.log("hide");
         }
     };
-    Panel.prototype.ShowPanel = function (selection) {
+    Panel.prototype.ShowPanel = function () {
         this.show = true;
         this.panelElement.className = "panel-show";
-        var oRange = selection.getRangeAt(0); //get the text range
-        var oRect = oRange.getBoundingClientRect();
-        if (oRect.left != 0 || oRect.right != 0) {
-            this.lastleft = this.panelElement.style.left = oRect.left + "px";
-            this.lastbottom = this.panelElement.style.top = oRect.bottom + "px";
-        }
-        else {
-        }
+        var pos = $(this.editor.GetEditorElement()).caret('offset');
+        console.log(pos);
+        this.lastleft = this.panelElement.style.left = pos.left + "px";
+        this.lastbottom = this.panelElement.style.top = (pos.top + pos.height) + "" + "px";
     };
     Panel.prototype.OnTextSelecting = function () {
-        var selection = window.getSelection();
+        var selection = document.getSelection();
         if (selection.toString() != "") {
-            this.ShowPanel(selection);
+            //this.ShowPanel();
+            this.show = true;
+            this.panelElement.className = "panel-show";
+            var oRange = selection.getRangeAt(0); //get the text range
+            var oRect = oRange.getBoundingClientRect();
+            if (oRect.left != 0 || oRect.right != 0) {
+                this.lastleft = this.panelElement.style.left = oRect.left + "px";
+                this.lastbottom = this.panelElement.style.top = oRect.bottom + "px";
+            }
         }
     };
     return Panel;
