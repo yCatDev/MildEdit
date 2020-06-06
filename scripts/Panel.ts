@@ -15,9 +15,6 @@ class Panel
 
         document.addEventListener("mousemove", ()=>{this.OnTextSelecting()});
 
-
-        //this.panelElement.addEventListener("click", ()=>{this.editor.RestoreFocus()});
-
         this.panelHTMLElement = (this.panelElement as HTMLElement);
 
         document.addEventListener('mousedown',  event => {

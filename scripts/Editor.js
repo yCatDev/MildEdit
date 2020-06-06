@@ -91,7 +91,7 @@ var Editor = /** @class */ (function () {
             return;
         }
         var processedDocumentElement = this.ConvertImagesToBase64(documentElement);
-        var html = processedDocumentElement.innerHTML;
+        var html = '<head> <meta charset="UTF-8"></head>' + processedDocumentElement.innerHTML;
         // @ts-ignore
         var blob = htmlDocx.asBlob(html);
         var url = URL.createObjectURL(blob);

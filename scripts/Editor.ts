@@ -104,22 +104,24 @@ class Editor
 
 
     private ExportDocxFile() {
-        var documentElement =this.editorElement;
+        let documentElement =this.editorElement;
         if (!window.Blob) {
             alert('Your legacy browser does not support this action.');
             return;
         }
 
-        var processedDocumentElement = this.ConvertImagesToBase64(documentElement);
+        let processedDocumentElement = this.ConvertImagesToBase64(documentElement);
 
-        var html = processedDocumentElement.innerHTML;
+        let html = '<head> <meta charset="UTF-8"></head>'+processedDocumentElement.innerHTML;
         // @ts-ignore
-        var blob = htmlDocx.asBlob(html);
+        let blob = htmlDocx.asBlob(html);
 
-        var url = URL.createObjectURL(blob);
-        var link = document.createElement('A') as HTMLLinkElement;
+
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement('A') as HTMLLinkElement;
 
         link.href = url;
+
         // Set default file name.
         // Word will append file extension - do not add an extension here.
         //@ts-ignore
@@ -137,16 +139,16 @@ class Editor
     }
 
     private ConvertImagesToBase64(targetDocumentElement) {
-        var clonedDocumentElement = targetDocumentElement.cloneNode(true);
+        let clonedDocumentElement = targetDocumentElement.cloneNode(true);
 
-        var regularImages = targetDocumentElement.querySelectorAll("img");
-        var clonedImages = clonedDocumentElement.querySelectorAll("img");
-        var canvas = document.createElement('canvas');
-        var ctx = canvas.getContext('2d');
+        let regularImages = targetDocumentElement.querySelectorAll("img");
+        let clonedImages = clonedDocumentElement.querySelectorAll("img");
+        let canvas = document.createElement('canvas');
+        let ctx = canvas.getContext('2d');
 
-        for (var i = 0; i < regularImages.length; i++) {
-            var regularImgElement = regularImages[i];
-            var clonedImgElement = clonedImages[i];
+        for (let i = 0; i < regularImages.length; i++) {
+            let regularImgElement = regularImages[i];
+            let clonedImgElement = clonedImages[i];
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -158,7 +160,7 @@ class Editor
 
             // by default toDataURL() produces png image, but you can also export to jpeg
             // checkout function's documentation for more details
-            var dataURL = canvas.toDataURL();
+            let dataURL = canvas.toDataURL();
 
             clonedImgElement.setAttribute('src', dataURL);
         }

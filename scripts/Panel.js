@@ -7,7 +7,6 @@ var Panel = /** @class */ (function () {
         this.panelElement = document.getElementById(id);
         this.editor = editor;
         document.addEventListener("mousemove", function () { _this.OnTextSelecting(); });
-        //this.panelElement.addEventListener("click", ()=>{this.editor.RestoreFocus()});
         this.panelHTMLElement = this.panelElement;
         document.addEventListener('mousedown', function (event) {
             if (!_this.isOnPanel) {
